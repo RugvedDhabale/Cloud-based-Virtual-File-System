@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import HTTPException
 
 from controllers.syscall_controller import run_syscall
 from graph.flow_builder import build_flow
@@ -9,7 +10,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://cloud-based-virtual-file-system.vercel.app",
+        "http://localhost:5173",  # for local dev
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -18,10 +22,16 @@ app.add_middleware(
 
 @app.get("/syscall/{name}")
 def execute_syscall(name: str):
-
-    result = run_syscall(name)
-
-    graph = build_flow(result["steps"])
+    try:
+        result = run_syscall(name)
+        if not result or "steps" not in result:
+            raise HTTPException(status_code=404, detail=f"Syscall '{name}' not found or returned no steps")
+        graph = build_flow(result["steps"])
+        return {"program": name, "syscalls": result["steps"], "flow_graph": graph}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     return {
         "program": name,
