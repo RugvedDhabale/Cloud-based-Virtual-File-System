@@ -39,6 +39,11 @@ def execute_syscall(name: str):
         "flow_graph": graph
     }
 
+@app.get("/debug/{name}")
+def debug_syscall(name: str):
+    from utils.executor import execute_syscall
+    raw = execute_syscall(name)
+    return {"raw_output": raw}
 
 @app.get("/syscalls")
 def get_available_syscalls():

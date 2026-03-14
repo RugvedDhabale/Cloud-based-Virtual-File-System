@@ -1,15 +1,12 @@
 IMPORTANT_SYSCALLS = {
-    "open",
-    "openat",
-    "read",
-    "write",
-    "close",
-    "fork",
-    "vfork",
-    "clone",
-    "execve",
-    "exit",
-    "exit_group"
+    "open", "openat", "read", "write", "close",
+    "fork", "vfork", "clone", "execve",
+    "exit", "exit_group",
+    "brk", "mmap", "munmap", "mprotect",
+    "access", "fstat", "stat", "lstat",
+    "ioctl", "fcntl", "dup", "dup2",
+    "pipe", "socket", "connect", "accept",
+    "send", "recv", "sendto", "recvfrom"
 }
 
 
