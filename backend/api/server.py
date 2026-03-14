@@ -12,7 +12,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://cloud-based-virtual-file-system.vercel.app",
-        "http://localhost:5173",  # for local dev
+        "http://localhost:5173",
     ],
     allow_credentials=True,
     allow_methods=["*"],
